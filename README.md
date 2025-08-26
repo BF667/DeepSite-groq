@@ -1,20 +1,8 @@
----
-title: DeepSite
-emoji: 🐳
-colorFrom: blue
-colorTo: blue
-sdk: docker
-pinned: true
-app_port: 5173
-license: mit
-short_description: Generate any application with DeepSeek
-models:
-  - deepseek-ai/DeepSeek-V3-0324
----
+-
 
 # DeepSite 🚀
 
-DeepSite 是一个基于 React + TypeScript + Vite 构建的智能应用生成器，集成了 Monaco Editor 和 OpenAI，提供强大的代码编辑和 AI 辅助功能。
+DeepSite 是一个基于 React + TypeScript + Vite 构建的智能应用生成器，集成了 Monaco Editor 和 Groq，提供强大的代码编辑和 AI 辅助功能。
 
 ## 技术栈 💻
 
@@ -23,7 +11,7 @@ DeepSite 是一个基于 React + TypeScript + Vite 构建的智能应用生成�
 - **构建工具**: Vite 6
 - **UI 框架**: Tailwind CSS 4
 - **代码编辑器**: Monaco Editor
-- **AI 集成**: OpenAI API
+- **AI 集成**: Groq API
 - **其他特性**:
   - React Speech Recognition
   - React Markdown
@@ -42,7 +30,7 @@ DeepSite 是一个基于 React + TypeScript + Vite 构建的智能应用生成�
 1. 克隆仓库：
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/BF667/DeepSite-groq deepsite 
 cd deepsite
 ```
 
@@ -96,9 +84,9 @@ docker run -d -p 5173:5173 \
 ```bash
 docker run -d -p 8080:8080 \
   -e APP_PORT=8080 \
-  -e OPENAI_BASE_URL=https://openrouter.ai/api/v1 \
-  -e OPENAI_API_KEY=sk-or-v1-xxxxx \
-  -e OPENAI_MODEL=deepseek-ai/DeepSeek-V3-0324 \
+  -e GROQ_BASE_URL=https://api.groq.com/openai/v1/chat/completions \
+  -e GTOQ_API_KEY=ghp_xxxxxxxx \
+  -e GROQ_MODEL=openai/gpt-oss-20b \
   my-deepsite
 ```
 
@@ -111,9 +99,9 @@ docker run -d -p 8080:8080 \
 
 ## 环境变量可选参数 ⚙️
 
-- **`OPENAI_BASE_URL`**: API 的基础 URL（必填）
-- **`OPENAI_API_KEY`**: API 密钥（必填）
-- **`OPENAI_MODEL`**: 模型名称（必填）
+- **`GROQ_BASE_URL`**: API 的基础 URL（必填）
+- **`GROQ_API_KEY`**: API 密钥（必填）
+- **`GROQ_MODEL`**: 模型名称（必填）
 - **`APP_PORT`**: 应用端口，默认为 `5173`（可选）
 
 ## 项目结构 📁
@@ -146,7 +134,7 @@ deepsite/
 
 ```env
 VITE_APP_TITLE=DeepSite
-OPENAI_API_KEY=your_api_key
+GRPQ_API_KEY=your_api_key
 PORT=5173
 ```
 
