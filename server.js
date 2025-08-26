@@ -4,7 +4,7 @@ import { fileURLToPath } from "url";
 import dotenv from "dotenv";
 import bodyParser from "body-parser";
 
-import { createChatCompletion } from "./services/openai.js";
+import { createChatCompletion } from "./services/groq.js";
 
 // Load environment variables from .env file
 dotenv.config();
