@@ -2,7 +2,7 @@
 
 # DeepSite 🚀
 
-DeepSite 是一个基于 React + TypeScript + Vite 构建的智能应用生成器，集成了 Monaco Editor 和 Groq，提供强大的代码编辑和 AI 辅助功能。
+DeepSite 是一个基于 React + TypeScript + Vite 构建的智能应用生成器，集成了 Monaco Editor 和 Groq，提供强大的代码编辑和 AI 辅助功能，现在支持构建全栈网站，并使用 Groq 的 `openai/gpt-oss-20b` 模型。
 
 ## 技术栈 💻
 
@@ -11,7 +11,7 @@ DeepSite 是一个基于 React + TypeScript + Vite 构建的智能应用生成�
 - **构建工具**: Vite 6
 - **UI 框架**: Tailwind CSS 4
 - **代码编辑器**: Monaco Editor
-- **AI 集成**: Groq API
+- **AI 集成**: Groq API (使用 `openai/gpt-oss-20b` 模型)
 - **其他特性**:
   - React Speech Recognition
   - React Markdown
@@ -71,9 +71,7 @@ docker build -t my-deepsite .
 
 ```bash
 docker run -d -p 5173:5173 \
-  -e OPENAI_BASE_URL=https://openrouter.ai/api/v1 \
-  -e OPENAI_API_KEY=sk-or-v1-xxxxx \
-  -e OPENAI_MODEL=deepseek-ai/DeepSeek-V3-0324 \
+
   my-deepsite
 ```
 
