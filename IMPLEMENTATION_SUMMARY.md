@@ -177,6 +177,6 @@ npm start
 
 ---
 
-**Author**: MiniMax Agent  
+  
 **Version**: 3.0.0 Enhanced  
 **Status**: ✅ Complete and Ready for Deployment
