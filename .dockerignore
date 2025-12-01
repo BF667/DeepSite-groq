@@ -16,6 +16,3 @@ build
 .env
 .env.local
 
-# Exclude Docker-related files
-Dockerfile
-docker-compose.yml
