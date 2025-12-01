@@ -3,6 +3,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import dotenv from "dotenv";
 import bodyParser from "body-parser";
+import fs from "fs";
 
 import { 
   createChatCompletion, 
@@ -11,15 +12,23 @@ import {
   parseMultiFileResponse 
 } from "./services/ai-service.js";
 
-// Load environment variables from .env file
-dotenv.config();
-
-const app = express();
-
+// Load environment variables from .env file (if exists)
+// For Hugging Face Spaces, secrets are injected as environment variables directly
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const PORT = process.env.APP_PORT || 5173;
+const envPath = path.join(__dirname, '.env');
+if (fs.existsSync(envPath)) {
+  dotenv.config({ path: envPath });
+  console.log('✅ Loaded environment from .env file');
+} else {
+  console.log('ℹ️  No .env file found, using environment variables (Hugging Face Spaces mode)');
+}
+
+const app = express();
+
+// PORT priority: PORT (HF Spaces) > APP_PORT > 7860 (HF default) > 5173 (dev default)
+const PORT = process.env.PORT || process.env.APP_PORT || 7860;
 
 app.use(bodyParser.json({ limit: '10mb' }));
 app.use(express.static(path.join(__dirname, "dist")));

@@ -1,13 +1,18 @@
 /**
  * Unified AI Service
  * Supports multiple providers: Groq, OpenAI, DeepSeek, Kimi K2
+ * 
+ * Environment variables can be loaded from:
+ * - .env file (local development)
+ * - Hugging Face Spaces Secrets (production deployment)
+ * - System environment variables
  */
 
 import Groq from "groq-sdk";
-import dotenv from 'dotenv';
 import { PROVIDERS, getModelByKey, getAllModels } from './providers.js';
 
-dotenv.config();
+// Note: dotenv is loaded in server.js before this module is imported
+// For Hugging Face Spaces, secrets are available as process.env directly
 
 // Initialize provider clients
 const clients = {};

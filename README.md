@@ -39,7 +39,7 @@ An advanced AI-powered web application builder that generates complete fullstack
 - Node.js 18+
 - At least one AI provider API key
 
-### Installation
+### Local Installation
 
 ```bash
 # Clone the repository
@@ -63,6 +63,71 @@ npm start
 ```bash
 npm run dev
 ```
+
+## Hugging Face Spaces Deployment
+
+Deploy DeepSite Pro to Hugging Face Spaces with Docker SDK for free hosting.
+
+### Step 1: Create a New Space
+
+1. Go to [Hugging Face Spaces](https://huggingface.co/spaces)
+2. Click "Create new Space"
+3. Choose a name for your Space
+4. Select **Docker** as the SDK
+5. Choose your visibility (Public/Private)
+
+### Step 2: Configure Secrets
+
+Go to **Settings → Repository secrets** and add your API keys:
+
+| Secret Name | Required | Description |
+|-------------|----------|-------------|
+| `GROQ_API_KEY` | Yes (or other provider) | Your Groq API key |
+| `OPENAI_API_KEY` | Optional | Your OpenAI API key |
+| `DEEPSEEK_API_KEY` | Optional | Your DeepSeek API key |
+| `KIMI_API_KEY` | Optional | Your Kimi/Moonshot API key |
+
+> **Important**: Secrets are private and cannot be read after setting. They are available as environment variables at runtime.
+
+### Step 3: Upload Files
+
+Upload all project files to your Space repository, or use Git:
+
+```bash
+# Clone your Space
+git clone https://huggingface.co/spaces/YOUR_USERNAME/YOUR_SPACE_NAME
+cd YOUR_SPACE_NAME
+
+# Copy DeepSite Pro files
+cp -r /path/to/DeepSite-groq/* .
+
+# Commit and push
+git add .
+git commit -m "Initial deployment"
+git push
+```
+
+### Step 4: Wait for Build
+
+The Space will automatically build using the Dockerfile. Check the "Logs" tab for build progress.
+
+### How Secrets Work in HF Spaces
+
+- Secrets are stored securely in Hugging Face
+- They are injected as environment variables at runtime
+- No `.env` file is needed in production
+- Secrets are NOT copied when someone duplicates your Space
+- Variables (non-sensitive) ARE copied when duplicating
+
+### Troubleshooting HF Deployment
+
+**Build fails**: Check the Logs tab for errors. Common issues:
+- Missing `package-lock.json`: Run `npm install` locally to generate it
+- Permission errors: Dockerfile uses non-root user
+
+**No models available**: Verify secrets are set correctly in Space Settings
+
+**Port issues**: The app automatically uses port 7860 (HF default)
 
 ## Configuration
 
