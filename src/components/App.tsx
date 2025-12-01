@@ -16,6 +16,7 @@ import Tabs from "./tabs/tabs";
 import AskAI from "./ask-ai/ask-ai";
 import Preview from "./preview/preview";
 import FileManager from "./file-manager/file-manager";
+import DeploymentModal from "./deployment/deployment-modal";
 import type { GeneratedFile } from "../types/models";
 
 function App() {
@@ -35,6 +36,9 @@ function App() {
   const [files, setFiles] = useState<GeneratedFile[]>([]);
   const [activeFile, setActiveFile] = useState<string>("index.html");
   const [showFileManager, setShowFileManager] = useState(false);
+  
+  // Deployment state
+  const [showDeploymentModal, setShowDeploymentModal] = useState(false);
 
   // Get current file content for editor
   const getCurrentFileContent = () => {
@@ -201,6 +205,27 @@ function App() {
     }
   };
 
+  // Auto-deploy functionality
+  const handleDeploy = () => {
+    // Show deployment modal instead of just auto-saving
+    setShowDeploymentModal(true);
+  };
+
+  // Push to Hugging Face functionality
+  const handlePushToHF = () => {
+    const projectData = {
+      html,
+      files,
+      activeFile,
+      timestamp: Date.now(),
+      version: "3.0"
+    };
+    
+    // This would integrate with HF Spaces API in a real implementation
+    console.log("Pushing to HF:", projectData);
+    toast.info("🚀 Push to Hugging Face feature coming soon!");
+  };
+
   // Prevent accidental navigation
   useEvent("beforeunload", (e) => {
     if (isAiWorking || html !== defaultHTML) {
@@ -232,7 +257,11 @@ function App() {
   });
 
   return (
-    <div className="h-screen bg-gray-950 font-sans overflow-hidden">
+    <div className="h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950 font-sans overflow-hidden relative">
+      {/* Background pattern */}
+      <div className="absolute inset-0 opacity-20">
+        <div className="w-full h-full bg-gray-800/10 bg-[size:20px_20px] bg-[linear-gradient(to_right,#374151_1px,transparent_1px),linear-gradient(to_bottom,#374151_1px,transparent_1px)]"></div>
+      </div>
       <Header
         onReset={() => {
           if (isAiWorking) {
@@ -254,6 +283,8 @@ function App() {
         filesCount={files.length}
         onToggleFileManager={() => setShowFileManager(!showFileManager)}
         showFileManager={showFileManager}
+        onDeploy={handleDeploy}
+        onPushToHF={handlePushToHF}
       />
       
       <main className="max-lg:flex-col flex w-full">
@@ -349,6 +380,15 @@ function App() {
           setView={setCurrentView}
         />
       </main>
+
+      {/* Deployment Modal */}
+      <DeploymentModal
+        isOpen={showDeploymentModal}
+        onClose={() => setShowDeploymentModal(false)}
+        html={html}
+        files={files}
+        projectName="My DeepSite Project"
+      />
     </div>
   );
 }

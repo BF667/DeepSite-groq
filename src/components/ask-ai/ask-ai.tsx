@@ -43,6 +43,7 @@ function AskAI({
   // Settings
   const [selectedModel, setSelectedModel] = useState("groq/gpt-oss-120b");
   const [mode, setMode] = useState<GenerationMode>("frontend");
+  const [isEnhanceMode, setIsEnhanceMode] = useState(false);
 
   const audio = new Audio(SuccessSound);
   audio.volume = 0.5;
@@ -214,7 +215,7 @@ function AskAI({
   return (
     <>
       <div
-        className={`bg-gray-950 rounded-xl py-2 lg:py-2.5 pl-3.5 lg:pl-4 pr-2 lg:pr-2.5 absolute lg:sticky bottom-3 left-3 lg:bottom-4 lg:left-4 w-[calc(100%-1.5rem)] lg:w-[calc(100%-2rem)] z-10 group ${
+        className={`bg-gradient-to-r from-gray-950 via-gray-900/95 to-gray-950 rounded-xl py-2 lg:py-2.5 pl-3.5 lg:pl-4 pr-2 lg:pr-2.5 absolute lg:sticky bottom-3 left-3 lg:bottom-4 lg:left-4 w-[calc(100%-1.5rem)] lg:w-[calc(100%-2rem)] z-10 group border border-gray-800/50 backdrop-blur-xl shadow-2xl ${
           isAiWorking ? "animate-pulse" : ""
         }`}
       >
@@ -258,6 +259,20 @@ function AskAI({
                   disabled={isAiWorking}
                 />
               </div>
+              <div>
+                <label className="text-xs text-gray-500 mb-1 block">Enhance</label>
+                <button
+                  disabled={isAiWorking}
+                  onClick={() => setIsEnhanceMode(!isEnhanceMode)}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 ${
+                    isEnhanceMode
+                      ? 'bg-gradient-to-r from-pink-500 to-purple-500 text-white shadow-lg'
+                      : 'bg-gray-800 text-gray-400 hover:text-white hover:bg-gray-700'
+                  }`}
+                >
+                  {isEnhanceMode ? 'ON' : 'OFF'}
+                </button>
+              </div>
             </div>
             {mode === 'fullstack' && (
               <p className="text-xs text-blue-400/80">
@@ -269,7 +284,12 @@ function AskAI({
 
         {/* Main Input Area */}
         <div className="w-full relative flex items-center justify-between gap-2">
-          <RiSparkling2Fill className="text-lg lg:text-xl text-gray-500 group-focus-within:text-pink-500 flex-shrink-0" />
+          <div className="relative flex-shrink-0">
+            <RiSparkling2Fill className="text-lg lg:text-xl text-gray-500 group-focus-within:text-pink-500 flex-shrink-0" />
+            {isEnhanceMode && (
+              <div className="absolute -top-1 -right-1 w-3 h-3 bg-gradient-to-r from-pink-500 to-purple-500 rounded-full animate-pulse"></div>
+            )}
+          </div>
           
           <input
             type="text"
@@ -277,10 +297,14 @@ function AskAI({
             className="w-full bg-transparent max-lg:text-sm outline-none px-2 text-white placeholder:text-gray-500 font-code"
             placeholder={
               hasAsked 
-                ? "What do you want to ask AI next?" 
+                ? isEnhanceMode 
+                  ? "What do you want to enhance?"
+                  : "What do you want to ask AI next?" 
                 : mode === 'fullstack' 
                   ? "Describe your fullstack app..." 
-                  : "Ask AI anything..."
+                  : isEnhanceMode
+                    ? "Describe what to enhance..."
+                    : "Ask AI anything..."
             }
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
@@ -332,6 +356,15 @@ function AskAI({
         {!showSettings && (
           <div className="flex items-center gap-2 mt-2 text-xs text-gray-500">
             <span>Mode: {mode}</span>
+            {isEnhanceMode && (
+              <>
+                <span>•</span>
+                <span className="flex items-center gap-1">
+                  <div className="w-1.5 h-1.5 bg-gradient-to-r from-pink-500 to-purple-500 rounded-full animate-pulse"></div>
+                  Enhance
+                </span>
+              </>
+            )}
             <span>•</span>
             <span className="truncate max-w-[150px]">
               Model: {selectedModel.split('/')[1]}

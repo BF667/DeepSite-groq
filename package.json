@@ -1,7 +1,7 @@
 {
-  "name": "deepsite-pro",
-  "version": "2.0.0",
-  "description": "AI-powered fullstack web app builder with multi-provider support",
+  "name": "deepsite-v3-enhanced",
+  "version": "3.0.0",
+  "description": "DeepSite V3 Enhanced - AI-powered fullstack web app builder with auto-deploy, Hugging Face integration, and enhanced UI",
   "private": true,
   "type": "module",
   "scripts": {
@@ -50,7 +50,11 @@
     "fullstack",
     "groq",
     "vibe-coding",
-    "code-generation"
+    "code-generation",
+    "auto-deploy",
+    "huggingface",
+    "enhance-mode",
+    "deepsite-v3"
   ],
   "author": "DeepSite Pro Contributors",
   "license": "MIT"
