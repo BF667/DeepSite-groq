@@ -1,47 +1,19 @@
-# Dockerfile for Hugging Face Spaces Deployment
-# Optimized for HF Spaces with Docker SDK
-
-# Use an official Node.js runtime as the base image
-FROM node:22-slim
-
-# Set up non-root user for security (HF Spaces requirement)
+FROM node:20-alpine
 USER root
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    ca-certificates \
-    && rm -rf /var/lib/apt/lists/*
 
-# Create app directory
-WORKDIR /app
+USER 1000
+WORKDIR /usr/src/app
+# Copy package.json and package-lock.json to the container
+COPY --chown=1000 package.json package-lock.json ./
 
-# Create non-root user
-RUN useradd -m -u 1000 appuser
+# Copy the rest of the application files to the container
+COPY --chown=1000 . .
 
-# Copy package files first for better caching
-COPY --chown=appuser:appuser package*.json ./
-
-# Install dependencies
-RUN npm ci --only=production=false
-
-# Copy source code
-COPY --chown=appuser:appuser . .
-
-# Build the application
+RUN npm install
 RUN npm run build
 
-# Switch to non-root user
-USER appuser
-
-# Hugging Face Spaces uses port 7860 by default
-# The app will use PORT env variable if set, otherwise defaults to 7860
-ENV PORT=7860
-ENV NODE_ENV=production
-
-# Expose the port
-EXPOSE 7860
-
-# Health check for HF Spaces
-HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
-    CMD node -e "require('http').get('http://localhost:' + (process.env.PORT || 7860) + '/api/health', (r) => process.exit(r.statusCode === 200 ? 0 : 1))"
+# Expose the application port (assuming your app runs on port 3000)
+EXPOSE 3000
 
 # Start the application
-CMD ["node", "server.js"]
+CMD ["npm", "start"]
